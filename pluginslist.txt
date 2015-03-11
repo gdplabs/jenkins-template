@@ -25,6 +25,7 @@ git
 git-client
 github
 github-api
+gradle
 greenballs
 htmlpublisher
 image-gallery
