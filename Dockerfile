@@ -12,6 +12,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
+ENV JAVA_OPTS -Dmail.smtp.starttls.enable=true
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/vloume from a data container, 
