@@ -31,6 +31,7 @@ htmlpublisher
 image-gallery
 jacoco
 javadoc
+jdepend
 job-dsl
 jquery
 jshint-checkstyle
