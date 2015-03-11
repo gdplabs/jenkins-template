@@ -6,7 +6,9 @@ RUN apt-get update && apt-get install -y \
   unzip \
   wget \
   zip \
-  openjdk-7-jdk
+  openjdk-7-jdk \
+  ant \
+  jq
 
 RUN rm -rf /var/lib/apt/lists/* 
 
