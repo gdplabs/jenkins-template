@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
 RUN rm -rf /var/lib/apt/lists/* 
 
 ENV JENKINS_HOME /var/jenkins_home
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/vloume from a data container, 
@@ -27,16 +28,19 @@ VOLUME /var/jenkins_home
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 
-COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-angent-port.groovy
+COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
-ENV JENKINS_VERSION 1.580.1
+ENV JENKINS_VERSION 1.596.1
 
-# could use ADD but this one does not check Last-Modified header 
-# see https://github.com/docker/docker/issues/8331
-RUN curl -L http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war -o /usr/share/jenkins/jenkins.war
+RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKIN_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war
 
 ENV JENKINS_UC https://updates.jenkins-ci.org
 RUN chown -R jenkins "$JENKINS_HOME" /usr/share/jenkins/ref
+
+COPY jenkins.sh /usr/local/bin/jenkins.sh
+COPY plugins.sh /usr/local/bin/plugins.sh
+COPY pluginslist.txt $JENKINS_HOME/pluginslist.txt
+RUN plugins.sh $JENKINS_HOME/pluginslist.txt
 
 # for main web interface:
 EXPOSE 8080
@@ -46,13 +50,4 @@ EXPOSE 50000
 
 USER jenkins
 
-COPY jenkins.sh /usr/local/bin/jenkins.sh
 ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
-
-# from a derived Dockerfile, can use `RUN plugin.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
-
-# When building an image, copy plugins.sh and pluginslist.sh to the container directory
-# Then run plugins.sh and pluginslist.txt as a parameter to download the latest plugin version specified in the pluginslist.txt
-COPY plugins.sh /usr/local/bin/plugins.sh
-COPY pluginslist.txt $JENKINS_HOME/pluginslist.txt
-RUN plugins.sh $JENKINS_HOME/pluginslist.txt
