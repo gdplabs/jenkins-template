@@ -16,20 +16,24 @@ ENV JENKINS_HOME /var/jenkins_home
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 ENV JAVA_OPTS -Dmail.smtp.starttls.enable=true
 
-# Jenkins is ran with user `jenkins`, uid = 1000
-# If you bind mount a volume from host/vloume from a data container, 
-# ensure you use same uid
+COPY php-qa.sh /usr/local/bin/php-qa.sh
+RUN echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/dotdeb.list && \
+    curl http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+
+RUN apt-get update && apt-get install -y \
+  php5-cli \
+  php5-fpm \
+  php5-dev \
+  php5-mysql \
+  php5-mcrypt \
+  php5-gd \
+  php5-curl \
+  php-pear \
+  && php-qa.sh
+
 RUN useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins
 
-# Jenkins home directoy is a volume, so configuration and build history 
-# can be persisted and survive image upgrades
-VOLUME /var/jenkins_home
-
-# `/usr/share/jenkins/ref/` contains all reference configuration we want 
-# to set on a fresh new installation. Use it to bundle additional plugins 
-# or config file with your custom jenkins Docker image.
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
-
 
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
@@ -45,12 +49,8 @@ COPY plugins.sh /usr/local/bin/plugins.sh
 COPY pluginslist.txt $JENKINS_HOME/pluginslist.txt
 RUN plugins.sh $JENKINS_HOME/pluginslist.txt
 
-# for main web interface:
+VOLUME /var/jenkins_home
 EXPOSE 8080
-
-# will be used by attached slave agents:
 EXPOSE 50000
-
 USER jenkins
-
 ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
