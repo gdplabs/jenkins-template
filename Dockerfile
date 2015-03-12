@@ -43,7 +43,8 @@ RUN chown -R jenkins "$JENKINS_HOME" /usr/share/jenkins/ref
 COPY jenkins.sh /usr/local/bin/jenkins.sh
 COPY plugins.sh /usr/local/bin/plugins.sh
 COPY pluginslist.txt $JENKINS_HOME/pluginslist.txt
-RUN chmod +x /usr/local/bin/{jenkins.sh,plugins.sh} && \
+RUN chmod +x /usr/local/bin/jenkins.sh && \
+    chmod +x /usr/local/bin/plugins.sh && \
     plugins.sh $JENKINS_HOME/pluginslist.txt
 
 VOLUME /var/jenkins_home
