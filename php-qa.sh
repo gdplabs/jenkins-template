@@ -23,3 +23,5 @@ pear install PHP_CodeSniffer
 pecl install xdebug
 echo "zend_extension=`php-config --extension-dir`/xdebug.so" > /etc/php5/mods-available/xdebug.ini
 php5enmod xdebug
+pear channel-discover pear.phing.info
+pear install phing/phing
