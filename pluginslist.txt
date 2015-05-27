@@ -1,5 +1,6 @@
 analysis-collector
 analysis-core
+ansicolor
 ant
 antisamy-markup-formatter
 any-buildstep
@@ -19,6 +20,7 @@ dry
 email-ext
 envinject
 external-monitor-job
+findbugs
 flexible-publish
 ghprb
 git
@@ -31,6 +33,7 @@ htmlpublisher
 image-gallery
 jacoco
 javadoc
+javancss
 jdepend
 job-dsl
 jquery
