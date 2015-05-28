@@ -15,7 +15,7 @@ RUN echo "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/s
 ENV JENKINS_HOME /var/jenkins_home
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 ENV JAVA_OPTS -Dmail.smtp.starttls.enable=true
-ENV JENKINS_VERSION 1.596.1
+ENV JENKINS_VERSION 1.596.3
 ENV JENKINS_UC https://updates.jenkins-ci.org
 
 COPY php-qa.sh /usr/local/bin/php-qa.sh
