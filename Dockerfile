@@ -7,6 +7,7 @@ RUN echo "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/s
   unzip \
   wget \
   zip \
+  bzip2 \
   openjdk-7-jdk \
   ant \
   jq && \
