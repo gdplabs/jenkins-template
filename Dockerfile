@@ -10,6 +10,8 @@ RUN echo "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/s
   bzip2 \
   openjdk-7-jdk \
   ant \
+  fontconfig \
+  libfreetype6 \
   jq && \
   rm -rf /var/lib/apt/lists/* 
 
