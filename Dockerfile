@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie
 
 RUN echo "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/sources.list && \
   apt-get update && apt-get install -y \
@@ -12,6 +12,7 @@ RUN echo "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/s
   ant \
   fontconfig \
   libfreetype6 \
+  libicu52 \
   jq && \
   rm -rf /var/lib/apt/lists/* 
 
@@ -22,9 +23,7 @@ ENV JENKINS_VERSION 1.596.3
 ENV JENKINS_UC https://updates.jenkins-ci.org
 
 COPY php-qa.sh /usr/local/bin/php-qa.sh
-RUN echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/dotdeb.list && \
-    curl http://www.dotdeb.org/dotdeb.gpg | apt-key add - && \
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     php5-cli \
     php5-fpm \
     php5-dev \
